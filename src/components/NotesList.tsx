@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNotes } from "@/hooks/useNotes";
 import { Loader2, MessageSquare } from "lucide-react";
@@ -44,26 +44,26 @@ export function NotesList({ bookId }: NotesListProps) {
     <ScrollArea className="h-full">
       <div className="p-4 space-y-3">
         {notes.map((note) => (
-          <Card
+          <Alert
             key={note.id}
-            className={`p-4 ${
+            className={`!grid-cols-[auto_1fr] ${
               note.author === "August"
                 ? "bg-amber-50/50 border-amber-100"
                 : "bg-violet-50/50 border-violet-100"
             }`}
           >
-            <div className="flex items-start justify-between gap-2 mb-2">
+            <div
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                note.author === "August"
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-violet-100 text-violet-700"
+              }`}
+            >
+              {note.author === "August" ? "🌻" : "🌸"}
+            </div>
+            <AlertTitle className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
-                <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                    note.author === "August"
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-violet-100 text-violet-700"
-                  }`}
-                >
-                  {note.author === "August" ? "🌻" : "🌸"}
-                </div>
-                <span className="text-sm font-medium text-stone-600">
+                <span className="text-sm font-medium text-stone-600 mr-4">
                   {note.author}
                 </span>
               </div>
@@ -72,19 +72,21 @@ export function NotesList({ bookId }: NotesListProps) {
                   p. {note.page_number}
                 </span>
               )}
-            </div>
-            <p className="text-stone-700 text-sm whitespace-pre-wrap">
-              {note.text}
-            </p>
-            <p className="text-[10px] text-stone-400 mt-2">
-              {new Date(note.created_at).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                hour: "numeric",
-                minute: "2-digit",
-              })}
-            </p>
-          </Card>
+            </AlertTitle>
+            <AlertDescription>
+              <p className="text-stone-700 text-sm whitespace-pre-wrap">
+                {note.text}
+              </p>
+              <p className="text-[10px] text-stone-400 mt-2">
+                {new Date(note.created_at).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}
+              </p>
+            </AlertDescription>
+          </Alert>
         ))}
       </div>
     </ScrollArea>

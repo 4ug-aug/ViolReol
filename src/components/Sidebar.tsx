@@ -1,5 +1,6 @@
 import { BookList } from "./BookList";
 import { AddBookForm } from "./AddBookForm";
+import { ReadingStats } from "./ReadingStats";
 import { useUserStore } from "@/stores/userStore";
 import { useUIStore } from "@/stores/uiStore";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,9 @@ export function Sidebar() {
         <h1 className="text-xl font-serif text-stone-800">ViolReol</h1>
         <p className="text-xs text-stone-400 mt-0.5">Your shared book collection</p>
       </div>
+
+      {/* Reading Stats */}
+      <ReadingStats />
 
       {/* Book List */}
       <div className="flex-1 overflow-hidden">
