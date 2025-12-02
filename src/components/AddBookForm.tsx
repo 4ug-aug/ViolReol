@@ -1,5 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -7,10 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useAddBook } from "@/hooks/useAddBook";
-import { useUserStore } from "@/stores/userStore";
 import { fetchBookCovers } from "@/lib/bookCover";
+import { useUserStore } from "@/stores/userStore";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { CoverSelectionDialog } from "./CoverSelectionDialog";
@@ -90,19 +90,23 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
       setShowCoverSelection(false);
       onOpenChange(false);
     } catch (err: any) {
-      // Check if it's a table-not-found error
+      // Log the actual error for debugging
+      console.error("Add book error:", err);
+      
+      // Check if it's a table-not-found error (more specific check)
       const isTableNotFound =
         err?.code === "42P01" ||
-        err?.message?.includes("relation") ||
-        err?.message?.includes("does not exist") ||
-        err?.message?.includes("Could not find");
+        (err?.message?.includes("relation") && err?.message?.includes("does not exist")) ||
+        err?.message?.includes("relation \"public.books\" does not exist") ||
+        err?.message?.includes("relation \"public.user_progress\" does not exist");
 
       if (isTableNotFound) {
         setError(
           "Database tables not found. Please run the SQL schema from supabase-schema.sql in your Supabase SQL Editor."
         );
       } else {
-        setError(err?.message || "Failed to add book. Please try again.");
+        // Show the actual error message for better debugging
+        setError(err?.message || err?.error_description || "Failed to add book. Please try again.");
       }
       // Close cover selection on error
       setShowCoverSelection(false);

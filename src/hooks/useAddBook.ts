@@ -6,10 +6,10 @@ export function useAddBook() {
 
   return useMutation({
     mutationFn: async (book: BookInsert): Promise<Book> => {
-      // Extract initialProgress and remove it from book data
-      const { initialProgress, added_by, ...bookData } = book;
+      // Extract initialProgress (not a column in books table), keep added_by
+      const { initialProgress, ...bookData } = book;
       
-      // Insert the book
+      // Insert the book (bookData includes added_by, title, author, cover_image_url)
       const { data, error } = await supabase
         .from("books")
         .insert(bookData)
@@ -21,12 +21,13 @@ export function useAddBook() {
       // Create initial progress entries for both users
       // The user adding the book gets initialProgress (or "not_started"), the other gets "not_started"
       const addingUserProgress = initialProgress || "not_started";
-      const otherUser = added_by === "August" ? "Viola" : "August";
+      const addedBy = book.added_by;
+      const otherUser = addedBy === "August" ? "Viola" : "August";
       
       const { error: progressError } = await supabase
         .from("user_progress")
         .insert([
-          { book_id: data.id, user_name: added_by, progress: addingUserProgress },
+          { book_id: data.id, user_name: addedBy, progress: addingUserProgress },
           { book_id: data.id, user_name: otherUser, progress: "not_started" },
         ]);
 
