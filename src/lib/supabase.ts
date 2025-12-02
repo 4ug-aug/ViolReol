@@ -21,12 +21,13 @@ export const isSupabaseConfigured = isConfigured;
 // Type definitions for our database
 export type User = "August" | "Viola";
 
-export type BookProgress = "not_started" | "started" | "finished";
+export type BookProgress = "wishlist" | "not_started" | "started" | "finished";
 
 export interface Book {
   id: string;
   title: string;
   author: string | null;
+  cover_image_url: string | null;
   added_by: User;
   created_at: string;
 }
@@ -58,7 +59,9 @@ export interface Note {
 export interface BookInsert {
   title: string;
   author?: string;
+  cover_image_url?: string;
   added_by: User;
+  initialProgress?: BookProgress; // For the user adding the book
 }
 
 export interface NoteInsert {

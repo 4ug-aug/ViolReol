@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS books (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
   author TEXT,
+  cover_image_url TEXT,
   added_by TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT now()
 );
