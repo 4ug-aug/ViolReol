@@ -26,6 +26,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [totalPages, setTotalPages] = useState("");
   const [addToWishlist, setAddToWishlist] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isFetchingCovers, setIsFetchingCovers] = useState(false);
@@ -34,6 +35,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
   const [pendingBookData, setPendingBookData] = useState<{
     title: string;
     author?: string;
+    total_pages?: number;
   } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +48,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
     const bookData = {
       title: title.trim(),
       author: author.trim() || undefined,
+      total_pages: totalPages ? parseInt(totalPages, 10) : undefined,
     };
     setPendingBookData(bookData);
 
@@ -75,6 +78,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
       await addBook.mutateAsync({
         title: pendingBookData.title,
         author: pendingBookData.author,
+        total_pages: pendingBookData.total_pages,
         cover_image_url: coverUrl || undefined,
         added_by: user,
         initialProgress: addToWishlist ? "wishlist" : "not_started",
@@ -83,6 +87,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
       // Reset form
       setTitle("");
       setAuthor("");
+      setTotalPages("");
       setAddToWishlist(false);
       setError(null);
       setFoundCovers([]);
@@ -118,6 +123,7 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
       // Reset everything when dialog closes
       setTitle("");
       setAuthor("");
+      setTotalPages("");
       setAddToWishlist(false);
       setError(null);
       setFoundCovers([]);
@@ -159,6 +165,19 @@ export function AddBookForm({ open, onOpenChange }: AddBookFormProps) {
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
                 placeholder="F. Scott Fitzgerald"
+                disabled={isFetchingCovers}
+              />
+            </div>
+            <div>
+              <label className="text-sm text-stone-600 mb-1.5 block">
+                Total Pages (optional)
+              </label>
+              <Input
+                type="number"
+                min="1"
+                value={totalPages}
+                onChange={(e) => setTotalPages(e.target.value)}
+                placeholder="300"
                 disabled={isFetchingCovers}
               />
             </div>

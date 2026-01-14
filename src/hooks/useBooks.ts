@@ -81,7 +81,11 @@ export function useBooks() {
         return {
           ...book,
           augustProgress: augustProgress?.progress ?? "not_started",
+          augustCurrentPage: augustProgress?.current_page ?? 0,
+          augustRating: augustProgress?.rating ?? null,
           violaProgress: violaProgress?.progress ?? "not_started",
+          violaCurrentPage: violaProgress?.current_page ?? 0,
+          violaRating: violaProgress?.rating ?? null,
         };
       });
     },

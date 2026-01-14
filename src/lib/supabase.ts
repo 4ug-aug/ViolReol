@@ -29,6 +29,7 @@ export interface Book {
   author: string | null;
   cover_image_url: string | null;
   added_by: User;
+  total_pages: number | null;
   created_at: string;
 }
 
@@ -37,6 +38,8 @@ export interface UserProgress {
   book_id: string;
   user_name: User;
   progress: BookProgress;
+  current_page: number | null;
+  rating: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -44,7 +47,11 @@ export interface UserProgress {
 // Book with progress for both users
 export interface BookWithProgress extends Book {
   augustProgress: BookProgress;
+  augustCurrentPage: number | null;
+  augustRating: number | null;
   violaProgress: BookProgress;
+  violaCurrentPage: number | null;
+  violaRating: number | null;
 }
 
 export interface Note {
@@ -60,6 +67,7 @@ export interface BookInsert {
   title: string;
   author?: string;
   cover_image_url?: string;
+  total_pages?: number;
   added_by: User;
   initialProgress?: BookProgress; // For the user adding the book
 }
