@@ -24,7 +24,7 @@ import { useUpdateUserProgress } from "@/hooks/useUpdateUserProgress";
 import type { BookProgress } from "@/lib/supabase";
 import { useUIStore } from "@/stores/uiStore";
 import { useUserStore } from "@/stores/userStore";
-import { Loader2, Pencil, Plus, Star, Trash2 } from "lucide-react";
+import { ChevronLeft, Loader2, Pencil, Plus, Star, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { AddNoteForm } from "./AddNoteForm";
 import { EditBookDialog } from "./EditBookDialog";
@@ -168,6 +168,15 @@ export function BookDetails({ bookId }: BookDetailsProps) {
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="p-6 border-b border-stone-100">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setSelectedBookId(null)}
+          className="mb-4 text-stone-500 hover:text-stone-800 -ml-2"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back to Library
+        </Button>
         <div className="flex items-start gap-4 mb-6">
           {book.cover_image_url && (
             <img

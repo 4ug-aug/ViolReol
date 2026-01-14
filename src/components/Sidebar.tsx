@@ -14,11 +14,15 @@ export function Sidebar() {
   const setViewMode = useUIStore((state) => state.setViewMode);
   const setAddBookOpen = useUIStore((state) => state.setAddBookOpen);
   const isAddBookOpen = useUIStore((state) => state.isAddBookOpen);
+  const setSelectedBookId = useUIStore((state) => state.setSelectedBookId);
 
   return (
     <aside className="w-72 h-full bg-white border-r border-stone-200 flex flex-col">
       {/* Header */}
-      <div className="p-4 border-b border-stone-100">
+      <div 
+        className="p-4 border-b border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors"
+        onClick={() => setSelectedBookId(null)}
+      >
         <h1 className="text-xl font-serif text-stone-800">ViolReol</h1>
         <p className="text-xs text-stone-400 mt-0.5">Your shared book collection</p>
       </div>
@@ -29,7 +33,10 @@ export function Sidebar() {
       {/* Navigation Tabs */}
       <div className="px-4 py-2 border-b border-stone-100 flex gap-1">
         <button
-          onClick={() => setViewMode("books")}
+          onClick={() => {
+            setViewMode("books");
+            setSelectedBookId(null);
+          }}
           className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
             viewMode === "books"
               ? "bg-stone-100 text-stone-800"
